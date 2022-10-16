@@ -29,11 +29,21 @@ def check_col_datatypes(dataFrame):
     dataFrame["episodes"].replace({"Unknown": "nan", "unknown": "nan"}, inplace=True)
     dataFrame["episodes"] = dataFrame["episodes"].astype("float")
     return dataFrame
+def color_survived(val):
+    color = 'green' if val else 'red'
+    return f'background-color: {color}'
 
 def st_show_datatypes(dataFrame):
     import streamlit as st
+    col1,col2=st.columns(2)
     df_types = pd.DataFrame(dataFrame.dtypes, columns=['Data Type'])
-    st.write(df_types.astype(str))
+    with col1:
+        st.write(df_types.astype(str))
+
+    with col2:
+        # st.dataframe(df_types.style.applymap(color_survived, subset=['Data Type']))
+        con_table=df_types.astype(str)
+        st.table(con_table.style.applymap(color_survived, subset=['Data Type']))
 
 def check_null_values(dataFrame):
     # Check which rows have missing values
@@ -45,7 +55,6 @@ def st_show_nullvalues(dataFrame):
     import ast
     df_types = pd.DataFrame(dataFrame.dtypes, columns=['Data Type'])
     st.write(df_types.astype(bool))
-
 
 def download_database():
     from kaggle.api.kaggle_api_extended import KaggleApi
