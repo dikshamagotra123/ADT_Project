@@ -12,6 +12,20 @@ hide_menu_style = """
         """
 st.markdown(hide_menu_style, unsafe_allow_html=True)
 
+def add_bg_from_url():
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background-image: url("https://img.freepik.com/premium-vector/abstract-blur-background-with-pastel-color-colorful-wallpaper_592487-785.jpg");
+             background-attachment: fixed;
+             background-size: cover
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+    )
+add_bg_from_url()
 
 from utilities.utilities import side_bar_menu,check_col_datatypes,st_show_datatypes,check_null_values,st_show_nullvalues,download_database,progress_bar,import_mongodb_to_dataframe
 from annotated_text import annotated_text
