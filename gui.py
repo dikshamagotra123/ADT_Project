@@ -50,7 +50,7 @@ def main():
                     # st_show_datatypes(dataFrame=anime_df)
                     
             if st.button('Check Null Values'):
-                check_null_values(dataFrame = data_frame)
+                # check_null_values(dataFrame = data_frame)
                 st_show_nullvalues(data_frame)
         else:
             st.warning("MongoDB Empty!")

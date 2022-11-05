@@ -42,13 +42,14 @@ def st_show_datatypes(dataFrame):
 def check_null_values(dataFrame):
     # Check which rows have missing values
     df_types = pd.DataFrame(dataFrame.dtypes, columns=['Data Type'])
-    df_types.isnull().any()
+    
     return None
 
 def st_show_nullvalues(dataFrame):
     import streamlit as st
     from .design_functions import color_nullval
     df_types = pd.DataFrame(dataFrame.dtypes, columns=['Data Type'])
+    df_types.isnull().any()
     # st.write(df_types.astype(bool))
     con_table=df_types.astype(bool)
     st.table(con_table.style.applymap(color_nullval, subset=['Data Type']))
