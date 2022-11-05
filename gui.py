@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from PIL import Image
 img = Image.open('anime.jpg')
 
@@ -27,7 +28,7 @@ def add_bg_from_url():
     )
 add_bg_from_url()
 
-from utilities.utilities import side_bar_menu,check_col_datatypes,st_show_datatypes,check_null_values,st_show_nullvalues,download_database,progress_bar,import_mongodb_to_dataframe
+from utilities.utilities import side_bar_menu,check_col_datatypes,st_show_datatypes,check_null_values,st_show_nullvalues,download_database,progress_bar,import_mongodb_to_dataframe,color_survived
 from annotated_text import annotated_text
 
 
@@ -35,7 +36,6 @@ from annotated_text import annotated_text
 # Before loading, a scraper will run or a data saved in MongoDb will be converted to CSV and then 
 # pandas will read it.
 # ""","#faa"))
-
 
 def main():
     st.title("Anime Recommendation System")
@@ -59,10 +59,14 @@ def main():
             with col1:
                 st_show_datatypes(dataFrame=data_frame)
             if st.button('Clean columns datatypes'):
-                anime_df = check_col_datatypes(dataFrame = data_frame)
                 progress_bar()
+                anime_df = check_col_datatypes(dataFrame = data_frame)
+                df_types = pd.DataFrame(anime_df.dtypes, columns=['Data Type'])
+                
                 with col2:
-                    st_show_datatypes(dataFrame=anime_df)
+                    con_table=df_types.astype(str)
+                    st.table(con_table.style.applymap(color_survived, subset=['Data Type']))
+                    # st_show_datatypes(dataFrame=anime_df)
                     
             if st.button('Check Null Values'):
                 check_null_values(dataFrame = data_frame)
