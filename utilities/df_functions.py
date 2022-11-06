@@ -29,12 +29,6 @@ def check_col_datatypes(dataFrame):
     dataFrame["rating"].replace({"Unknown": "nan", "unknown": "nan"}, inplace=True)
     dataFrame["rating"] = pd.to_numeric(dataFrame['rating'])
 
-    # dataFrame["genre"].replace('',np.nan,regex = True)
-    # dataFrame["type"].replace('',np.nan,regex = True)
-
-    # dataFrame["type"].replace({'':"nan"}, inplace=True)
-    # dataFrame["type"] = dataFrame["type"].astype("str")
-# 
     dataFrame["members"].replace({"Unknown": "nan", "unknown": "nan"}, inplace=True)
     dataFrame["members"] = dataFrame["members"].astype("int")
     return dataFrame
