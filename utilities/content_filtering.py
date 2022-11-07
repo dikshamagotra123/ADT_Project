@@ -5,7 +5,7 @@ def drop_columns(dataFrame):
 
 def drop_na_columns(dataFrame):
     dataFrame.dropna(subset=["genre"], inplace=True)
-    return dataFrame
+    return None
 
 def set_delimeter(dataFrame):
     # I found that the list of genres that a row contains was inconsistently formatted with some rows having ", " as a delimiter and others ","
@@ -21,12 +21,26 @@ def hot_encode_dataframe(dataFrame):
 
     # Code from https://stackoverflow.com/questions/45312377/how-to-one-hot-encode-from-a-pandas-column-containing-a-list
     mlb = MultiLabelBinarizer(sparse_output=True)
-
-    dataFrame = dataFrame.join(pd.DataFrame.sparse.from_spmatrix(
+    print("Here 1")
+    
+    testdataFrame = dataFrame.join(pd.DataFrame.sparse.from_spmatrix(
                     mlb.fit_transform(dataFrame["genre"]),
                     index=dataFrame.index,
                     columns=mlb.classes_))
 
+    print("Here 2")
     # Drop the origininal genre column
-    dataFrame.drop("genre", axis=1, inplace=True)
-    return dataFrame
+    testdataFrame.drop("genre", axis=1, inplace=True)
+    print("Here 3")
+    return testdataFrame
+
+def drop_na_values(dataFrame):
+    dataFrame.dropna(inplace=True)
+    return None
+
+def sum_null_values(dataFrame):
+    import pandas as pd
+    import streamlit as st
+    null_val = pd.isnull(dataFrame).sum()
+    st.table(null_val.astype(str))
+    return None

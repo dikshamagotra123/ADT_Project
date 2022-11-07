@@ -6,7 +6,8 @@ import pandas as pd
 from utilities.db_functions import import_mongodb_to_dataframe,download_database
 from utilities.design_functions import add_bg_from_url,hide_menu_style,side_bar_menu,progress_bar,color_survived,info_text,success_text
 from utilities.df_functions import replace_col_datatypes,st_show_datatypes,st_show_nullvalues, filter_tv_rows,st_show_head,replace_rating_datatypes,export_cleandata_to_csv,total_shape,import_csv_to_dataframe
-from utilities.state_functions import clean_col,null_val,filter_tv,rating_val,null_tv,replace_rating,data_count,csv_file
+from utilities.state_functions import clean_col,null_val,filter_tv,rating_val,null_tv,replace_rating,data_count,csv_file,anime_data,drop_na_func,drop_col_func,set_delimeter_func,hot_encode_func,rating_data,na_data_func,sum_null_func
+from utilities.content_filtering import drop_columns,drop_na_columns,set_delimeter,hot_encode_dataframe,drop_na_values,sum_null_values
 
 
 
@@ -16,11 +17,11 @@ add_bg_from_url()
 
 def main():
     st.title("Anime Recommendation System")
-    st.button(label="Import Anime Data from Kaggle", on_click = download_database)
 
     options = side_bar_menu()
 
     if options == "Data Cleaning":
+        st.button(label="Import Anime Data from Kaggle", on_click = download_database)
         data_frame = import_mongodb_to_dataframe(collection_name="anime")
         rating_df = import_csv_to_dataframe(folder_name="archive",csv_name="rating.csv") 
 
@@ -108,6 +109,72 @@ def main():
                 
     elif options == "Content-Based Recommendation":
         st.subheader("Content-Based Recommendation")
+        cleaned_anime_data = import_csv_to_dataframe(folder_name="datasets",csv_name="cleaned_anime.csv")
+        if 'anime_data_val' not in st.session_state:
+            st.session_state.anime_data_val = False
+        
+        if 'drop_col' not in st.session_state:
+            st.session_state.drop_col = False
+        
+        if 'drop_na_col' not in st.session_state:
+            st.session_state.drop_na_col = False
+        
+        if 'set_delimeter' not in st.session_state:
+            st.session_state.set_delimeter = False
+        
+        if 'hot_encode' not in st.session_state:
+            st.session_state.hot_encode = False
+
+        st.button('Import Anime Cleaned Data', on_click = anime_data)
+        if st.session_state.anime_data_val:
+            st_show_head(cleaned_anime_data)
+        
+        st.button('Drop Columns', on_click = drop_col_func)
+        if st.session_state.drop_col:
+            drop_data = drop_columns(cleaned_anime_data)
+            st_show_head(drop_data)
+        
+        st.button('Drop NA Values', on_click = drop_na_func)
+        if st.session_state.drop_na_col:
+            print("HEREEEE")
+            # drop_na_columns(drop_data)
+            drop_data.dropna(subset=["genre"], inplace=True)
+            st.write(drop_data)
+        
+        st.button('Set Delimeter', on_click = set_delimeter_func)
+        if st.session_state.set_delimeter:
+            print("DELIMITER")
+            set_delimeter_data = set_delimeter(drop_data)
+            st_show_head(set_delimeter_data)
+        
+        st.button('Hot Encode Dataframe', on_click = hot_encode_func)
+        if st.session_state.hot_encode:
+            hot_encode_data = hot_encode_dataframe(set_delimeter_data)
+            print(type(hot_encode_data))
+            # st.table(hot_encode_data)
+        
+        cleaned_rating_data = import_csv_to_dataframe(folder_name="datasets",csv_name="cleaned_rating.csv")
+        if 'rating_data_val' not in st.session_state:
+            st.session_state.rating_data_val = False
+        
+        if 'na_data' not in st.session_state:
+            st.session_state.na_data = False
+        
+        if 'sum_null_val' not in st.session_state:
+            st.session_state.sum_null_val = False
+        
+        st.button('Import Rating Cleaned Data', on_click = rating_data)
+        if st.session_state.rating_data_val:
+            st_show_head(cleaned_rating_data)
+        
+        st.button('Drop rating NA values', on_click = na_data_func)
+        if st.session_state.na_data:
+            cleaned_rating_data.dropna(inplace=True)
+            st_show_head(cleaned_rating_data)
+        
+        st.button('Sum rating Null values', on_click = sum_null_func)
+        if st.session_state.sum_null_val:
+            st_show_nullvalues(cleaned_rating_data)
     else:
         st.subheader("Collaborative Recommendation")
 
