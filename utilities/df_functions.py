@@ -49,6 +49,9 @@ def replace_rating_datatypes(dataFrame):
     dataFrame["rating"].replace({-1: np.nan}, inplace=True)
     return dataFrame
 
+def total_shape(dataFrame):
+    return dataFrame.shape
+
 def export_cleandata_to_csv(df1,df2):
     df1.to_csv("datasets/cleaned_anime.csv", index=False)
     df2.to_csv("datasets/cleaned_rating.csv", index=False)
