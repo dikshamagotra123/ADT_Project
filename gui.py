@@ -52,15 +52,12 @@ def main():
                 with col2:
                     con_table=df_types.astype(str)
                     st.table(con_table.style.applymap(color_survived, subset=['Data Type']))
-                    # st_show_datatypes(dataFrame=anime_df)
                     
             st.button('Check Null Values', on_click=null_val)
             if st.session_state.check_null_val:
-                # anime_df = check_col_datatypes(dataFrame = data_frame)
                 st_show_nullvalues(dataFrame=anime_df)
             st.button('Filter | TV', on_click=filter_tv)
             if st.session_state.filter_tv:
-                # anime_df = check_col_datatypes(dataFrame = data_frame)
                 filter_tv_rows(dataFrame=anime_df)       
         else:
             st.warning("MongoDB Empty!")
