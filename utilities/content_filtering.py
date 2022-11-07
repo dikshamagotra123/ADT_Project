@@ -30,17 +30,49 @@ def hot_encode_dataframe(dataFrame):
 
     print("Here 2")
     # Drop the origininal genre column
-    testdataFrame.drop("genre", axis=1, inplace=True)
-    print("Here 3")
-    return testdataFrame
+    dataFrame.drop("genre", axis=1, inplace=True)
+    return dataFrame
 
-def drop_na_values(dataFrame):
-    dataFrame.dropna(inplace=True)
-    return None
+def generate_random_user(dataFrame):
+    # Use the random library to generate a random user id
+    import random
+    # Set random seed (for reproducibility)
+    random.seed(10)
 
-def sum_null_values(dataFrame):
-    import pandas as pd
-    import streamlit as st
-    null_val = pd.isnull(dataFrame).sum()
-    st.table(null_val.astype(str))
-    return None
+    # Pick a random id from the ratings dataset
+    user = random.randint(dataFrame["user_id"].min(), dataFrame["user_id"].max())
+    return user
+
+def get_user_df(dataFrame,user_id):
+    user_df = dataFrame[dataFrame["user_id"]==user_id]
+
+    # Reset the indexes
+    user_df.reset_index(drop=True, inplace=True)
+    # Drop the columns that are not needed
+    user_df = user_df.drop("user_id", axis=1)
+    return user_df
+
+def get_anime_in_user_df(anime_df,user_df):
+    user_genre_df = anime_df[anime_df["anime_id"].isin(user_df["anime_id"])]
+    return user_genre_df
+
+def sort_anime_id(dataFrame):
+    user_genre_df = dataFrame.sort_values("anime_id")
+    user_genre_df.reset_index(drop=True, inplace=True)
+    return user_genre_df
+
+def drop_orphan_anime(dataFrame):
+    dataFrame.drop([0, 1], axis=0, inplace=True)
+    dataFrame.reset_index(drop=True, inplace=True)
+    return dataFrame
+
+def create_genre_matrix(dataFrame):
+    dataFrame = dataFrame.drop(["anime_id", "name"], axis=1)
+
+def user_rating(dataFrame):
+    return dataFrame["rating"]
+
+def dot_product(user_genre_matrix,user_rating):
+    weights = user_genre_matrix.transpose().dot(user_rating["rating"])
+    return weights
+
