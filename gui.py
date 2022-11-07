@@ -26,8 +26,7 @@ def main():
         data_frame = import_mongodb_to_dataframe(collection_name="anime")
         rating_df = import_csv_to_dataframe() 
 
-        st.write(data_frame.head(10))
-        # st.write(rating_df.head(10))
+
         if not data_frame.empty:
 
             if 'clean_columns' not in st.session_state:
@@ -68,7 +67,7 @@ def main():
             st.warning("MongoDB Anime Empty!")
         
         if not rating_df.empty:
-            st.write(anime_df.head(10))
+            st.write(rating_df.head(10))
         else:
             st.warning("MongoDB Ratings Empty!")
                 
