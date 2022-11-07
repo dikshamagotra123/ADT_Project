@@ -1,10 +1,3 @@
-# def download_anime_database():
-#     from kaggle.api.kaggle_api_extended import KaggleApi
-#     api = KaggleApi()
-#     api.authenticate()
-#     api.dataset_download_file('CooperUnion/anime-recommendations-database','anime.csv')
-#     import_data_to_mongo(db_name="anime_db",collection_name="anime")
-#     return None
 
 def download_database():
     from kaggle.api.kaggle_api_extended import KaggleApi
@@ -12,7 +5,6 @@ def download_database():
     api.authenticate()
     api.dataset_download_files('CooperUnion/anime-recommendations-database',path="archive/", unzip=True)
     import_data_to_mongo(db_name="anime_db",collection_name="anime")
-    # import_data_to_mongo(db_name="anime_db",collection_name="rating")
     return None
 
 def import_data_to_mongo(db_name,collection_name):
@@ -25,10 +17,9 @@ def import_data_to_mongo(db_name,collection_name):
     #CSV to JSON Conversion
     csvfile = open(f"archive/{collection_name}.csv", 'r')
     reader = csv.DictReader( csvfile )
-    if collection_name == "anime":
-        header= ["anime_id", "name", "genre", "type", "episodes", "rating", "members"]
-    else:
-        header = ["user_id","anime_id","rating"]
+    
+    header= ["anime_id", "name", "genre", "type", "episodes", "rating", "members"]
+    
 
     for each in reader:
         row={}
@@ -50,3 +41,7 @@ def import_mongodb_to_dataframe(collection_name):
     df = pd.DataFrame(list(collection.find({},{"_id":False})))
     return df
 
+def import_csv_to_dataframe():
+    import pandas as pd
+    rating_df = pd.read_csv("archive/rating.csv")
+    return rating_df
