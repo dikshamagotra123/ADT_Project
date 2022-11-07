@@ -4,8 +4,7 @@ import streamlit as st
 
 pd.options.display.float_format = '{:,.3f}'.format # Rounding off the floats to 3rd decimal point
 
-def check_col_datatypes(dataFrame):
-    import numpy as np
+def replace_col_datatypes(dataFrame):
     # replace animes where the number of episodes are unknown into nan and then convert\
     #  everything to float
     dataFrame["episodes"].replace({"Unknown": "nan", "unknown": "nan"}, inplace=True)
@@ -20,6 +19,8 @@ def check_col_datatypes(dataFrame):
     dataFrame["members"].replace({"Unknown": "nan", "unknown": "nan"}, inplace=True)
     dataFrame["members"] = dataFrame["members"].astype("int")
     return dataFrame
+
+    
 
 def st_show_head(dataFrame):
     st.write(dataFrame.head(10))
@@ -43,3 +44,7 @@ def st_show_nullvalues(dataFrame):
 def filter_tv_rows(dataFrame):
     dataFrame = dataFrame[dataFrame["type"]== "TV"]
     return dataFrame
+
+def export_cleandata_to_csv(df1,df2):
+    df1.to_csv("datasets/cleaned_anime.csv", index=False)
+    df2.to_csv("datasets/cleaned_rating.csv", index=False)
