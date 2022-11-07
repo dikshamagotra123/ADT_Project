@@ -3,9 +3,9 @@ from PIL import Image
 img = Image.open('anime.jpg')
 st.set_page_config(page_title="Anime Recommendation System", page_icon=img)
 import pandas as pd
-from utilities.db_functions import import_mongodb_to_dataframe,download_database,import_csv_to_dataframe
+from utilities.db_functions import import_mongodb_to_dataframe,download_database
 from utilities.design_functions import add_bg_from_url,hide_menu_style,side_bar_menu,progress_bar,color_survived,info_text
-from utilities.df_functions import replace_col_datatypes,st_show_datatypes,st_show_nullvalues, filter_tv_rows,st_show_head
+from utilities.df_functions import replace_col_datatypes,st_show_datatypes,st_show_nullvalues, filter_tv_rows,st_show_head,import_csv_to_dataframe
 from utilities.state_functions import clean_col,null_val,filter_tv,rating_val,null_tv
 
 
@@ -22,7 +22,7 @@ def main():
 
     if options == "Data Cleaning":
         data_frame = import_mongodb_to_dataframe(collection_name="anime")
-        rating_df = import_csv_to_dataframe() 
+        rating_df = import_csv_to_dataframe(folder_name="archive",csv_name="rating") 
 
         if not data_frame.empty:
             st.write(data_frame.head(10))

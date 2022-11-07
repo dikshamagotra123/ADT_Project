@@ -21,7 +21,6 @@ def replace_col_datatypes(dataFrame):
     return dataFrame
 
     
-
 def st_show_head(dataFrame):
     st.write(dataFrame.head(10))
 
@@ -53,3 +52,9 @@ def replace_rating_datatypes(dataFrame):
 def export_cleandata_to_csv(df1,df2):
     df1.to_csv("datasets/cleaned_anime.csv", index=False)
     df2.to_csv("datasets/cleaned_rating.csv", index=False)
+
+def import_csv_to_dataframe(folder_name,csv_name):
+    import pandas as pd
+    rating_df = pd.read_csv(f"{folder_name}/{csv_name}")
+    return rating_df
+

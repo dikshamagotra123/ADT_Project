@@ -41,7 +41,3 @@ def import_mongodb_to_dataframe(collection_name):
     df = pd.DataFrame(list(collection.find({},{"_id":False})))
     return df
 
-def import_csv_to_dataframe():
-    import pandas as pd
-    rating_df = pd.read_csv("archive/rating.csv")
-    return rating_df
