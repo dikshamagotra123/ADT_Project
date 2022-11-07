@@ -45,6 +45,11 @@ def filter_tv_rows(dataFrame):
     dataFrame = dataFrame[dataFrame["type"]== "TV"]
     return dataFrame
 
+def replace_rating_datatypes(dataFrame):
+    import numpy as np
+    dataFrame["rating"].replace({-1: np.nan}, inplace=True)
+    return dataFrame
+
 def export_cleandata_to_csv(df1,df2):
     df1.to_csv("datasets/cleaned_anime.csv", index=False)
     df2.to_csv("datasets/cleaned_rating.csv", index=False)
