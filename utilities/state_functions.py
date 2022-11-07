@@ -14,4 +14,13 @@ def rating_val():
 
 def null_tv():
     st.session_state.null_tv_val = True
+
+def replace_rating():
+    st.session_state.replace_rating_val = True
+
+def data_count():
+    st.session_state.count_data = True
+
+def csv_file():
+    st.session_state.export_csv = True
     

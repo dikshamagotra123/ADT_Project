@@ -4,9 +4,9 @@ img = Image.open('anime.jpg')
 st.set_page_config(page_title="Anime Recommendation System", page_icon=img)
 import pandas as pd
 from utilities.db_functions import import_mongodb_to_dataframe,download_database
-from utilities.design_functions import add_bg_from_url,hide_menu_style,side_bar_menu,progress_bar,color_survived,info_text
-from utilities.df_functions import replace_col_datatypes,st_show_datatypes,st_show_nullvalues, filter_tv_rows,st_show_head,import_csv_to_dataframe
-from utilities.state_functions import clean_col,null_val,filter_tv,rating_val,null_tv
+from utilities.design_functions import add_bg_from_url,hide_menu_style,side_bar_menu,progress_bar,color_survived,info_text,success_text
+from utilities.df_functions import replace_col_datatypes,st_show_datatypes,st_show_nullvalues, filter_tv_rows,st_show_head,replace_rating_datatypes,export_cleandata_to_csv,total_shape,import_csv_to_dataframe
+from utilities.state_functions import clean_col,null_val,filter_tv,rating_val,null_tv,replace_rating,data_count,csv_file
 
 
 
@@ -22,7 +22,7 @@ def main():
 
     if options == "Data Cleaning":
         data_frame = import_mongodb_to_dataframe(collection_name="anime")
-        rating_df = import_csv_to_dataframe(folder_name="archive",csv_name="rating") 
+        rating_df = import_csv_to_dataframe(folder_name="archive",csv_name="rating.csv") 
 
         if not data_frame.empty:
             st.write(data_frame.head(10))
@@ -76,6 +76,33 @@ def main():
         st.button("Import Ratings Data from Kaggle", on_click = rating_val)
         if st.session_state.rating_data:
             st.write(rating_df.head(10))
+            if 'replace_rating_val' not in st.session_state:
+                st.session_state.replace_rating_val = False
+            
+            if 'count_data' not in st.session_state:
+                st.session_state.count_data = False
+            
+            if 'export_csv' not in st.session_state:
+                st.session_state.export_csv = False
+            
+            st.button('Replace Rating Datatypes', on_click=replace_rating)
+            if st.session_state.replace_rating_val:
+                progress_bar()
+                replace_df = replace_rating_datatypes(dataFrame=rating_df)
+                st_show_head(replace_df)
+
+            st.button('Total Count of Data', on_click=data_count)
+            if st.session_state.count_data:
+                progress_bar()
+                st.write(total_shape(dataFrame=rating_df))
+            
+            st.button('Export Clean CSV Files', on_click=csv_file)
+            if st.session_state.export_csv:
+                progress_bar()
+                export_cleandata_to_csv(data_frame,rating_df)
+                st.caption(success_text)
+            
+
         else:
             st.warning("MongoDB Anime Empty!")
                 
