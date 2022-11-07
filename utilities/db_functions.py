@@ -1,17 +1,18 @@
-def download_anime_database():
-    from kaggle.api.kaggle_api_extended import KaggleApi
-    api = KaggleApi()
-    api.authenticate()
-    api.dataset_download_file('CooperUnion/anime-recommendations-database','anime.csv','archive/')
-    import_data_to_mongo(db_name="anime_db",collection_name="anime")
-    return None
+# def download_anime_database():
+#     from kaggle.api.kaggle_api_extended import KaggleApi
+#     api = KaggleApi()
+#     api.authenticate()
+#     api.dataset_download_file('CooperUnion/anime-recommendations-database','anime.csv')
+#     import_data_to_mongo(db_name="anime_db",collection_name="anime")
+#     return None
 
-def download_rating_database():
+def download_database():
     from kaggle.api.kaggle_api_extended import KaggleApi
     api = KaggleApi()
     api.authenticate()
-    api.dataset_download_file('CooperUnion/anime-recommendations-database','rating.csv')
-    import_data_to_mongo(db_name="anime_db",collection_name="rating")
+    api.dataset_download_files('CooperUnion/anime-recommendations-database',path="archive/", unzip=True)
+    import_data_to_mongo(db_name="anime_db",collection_name="anime")
+    # import_data_to_mongo(db_name="anime_db",collection_name="rating")
     return None
 
 def import_data_to_mongo(db_name,collection_name):
@@ -27,7 +28,7 @@ def import_data_to_mongo(db_name,collection_name):
     if collection_name == "anime":
         header= ["anime_id", "name", "genre", "type", "episodes", "rating", "members"]
     else:
-        header ["user_id","anime_id","rating"]
+        header = ["user_id","anime_id","rating"]
 
     for each in reader:
         row={}

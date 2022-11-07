@@ -1,5 +1,4 @@
 import streamlit as st
-from PIL import Image
 
 def progress_bar():
     import streamlit as st
@@ -29,7 +28,7 @@ def add_bg_from_url():
          unsafe_allow_html=True
     )
 
-img = Image.open('anime.jpg')
+
 
 
 hide_menu_style = """ 
