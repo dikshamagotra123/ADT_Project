@@ -2,12 +2,10 @@ import streamlit as st
 from PIL import Image
 img = Image.open('anime.jpg')
 st.set_page_config(page_title="Anime Recommendation System", page_icon=img)
-
 import pandas as pd
-from utilities.db_functions import download_database,import_mongodb_to_dataframe
+from utilities.db_functions import import_mongodb_to_dataframe,download_database
 from utilities.design_functions import add_bg_from_url,hide_menu_style,side_bar_menu,progress_bar,color_survived
-from utilities.df_functions import check_col_datatypes,st_show_datatypes,st_show_nullvalues, filter_tv_rows
-
+from utilities.df_functions import check_col_datatypes,st_show_datatypes,check_null_values,st_show_nullvalues, filter_tv_rows
 
 
 st.markdown(hide_menu_style, unsafe_allow_html=True)

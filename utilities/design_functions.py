@@ -30,7 +30,6 @@ def add_bg_from_url():
 
 
 
-
 hide_menu_style = """ 
         <style>
         #MainMenu {visibility: hidden;}
