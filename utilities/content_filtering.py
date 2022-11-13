@@ -21,17 +21,17 @@ def hot_encode_dataframe(dataFrame):
 
     # Code from https://stackoverflow.com/questions/45312377/how-to-one-hot-encode-from-a-pandas-column-containing-a-list
     mlb = MultiLabelBinarizer(sparse_output=True)
-    print("Here 1")
+
     
     testdataFrame = dataFrame.join(pd.DataFrame.sparse.from_spmatrix(
                     mlb.fit_transform(dataFrame["genre"]),
                     index=dataFrame.index,
                     columns=mlb.classes_))
 
-    print("Here 2")
+
     # Drop the origininal genre column
-    dataFrame.drop("genre", axis=1, inplace=True)
-    return dataFrame
+    testdataFrame.drop("genre", axis=1, inplace=True)
+    return testdataFrame
 
 def generate_random_user(dataFrame):
     # Use the random library to generate a random user id
@@ -61,18 +61,41 @@ def sort_anime_id(dataFrame):
     user_genre_df.reset_index(drop=True, inplace=True)
     return user_genre_df
 
+# Delete this function when random works
 def drop_orphan_anime(dataFrame):
     dataFrame.drop([0, 1], axis=0, inplace=True)
     dataFrame.reset_index(drop=True, inplace=True)
     return dataFrame
 
-def create_genre_matrix(dataFrame):
+def user_genre_matrix(dataFrame):
     dataFrame = dataFrame.drop(["anime_id", "name"], axis=1)
+    return dataFrame
 
 def user_rating(dataFrame):
     return dataFrame["rating"]
 
 def dot_product(user_genre_matrix,user_rating):
-    weights = user_genre_matrix.transpose().dot(user_rating["rating"])
+    weights = user_genre_matrix.transpose().dot(user_rating)
     return weights
 
+def set_index(dataFrame):
+    recommendation_table = dataFrame.set_index("anime_id")
+    # Drop the name column
+    recommendation_table.drop("name", axis=1, inplace=True)
+    return recommendation_table
+
+def get_weighted_avg(recommendation_table, weights):
+    recommendation_series = (recommendation_table * weights).sum(axis=1) / weights.sum()
+    return recommendation_series
+
+def sort_desc_fun(recommendation_series):
+    recommendations = recommendation_series.sort_values(ascending=False)
+    return recommendations
+
+def top_10_recc(anime_df, recommendations):
+    recommendations_df = anime_df.loc[anime_df["anime_id"].isin(recommendations.head(10).keys())]
+    # Set the index of the dataframe to the anime ids
+    recommendations_df.set_index("anime_id", inplace=True)
+    # Use loc and the anime ids of the top 10 anime recommendations to preserve the order and output that to the user
+    final_df = recommendations_df.loc[recommendations.head(10).keys()][["name"]]
+    return final_df

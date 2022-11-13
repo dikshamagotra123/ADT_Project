@@ -51,3 +51,39 @@ def na_data_func():
 
 def sum_null_func():
     st.session_state.sum_null_val = True
+
+def random_user_func():
+    st.session_state.random_user = True
+
+def get_user_func():
+    st.session_state.get_user = True
+
+def get_anime_user_id_func():
+    st.session_state.get_anime_user_id = True
+
+def drop_orphan_func():
+    st.session_state.drop_orphan = True
+
+def sort_matrix_func():
+    st.session_state.sort_matrix = True
+
+def create_matrix_func():
+    st.session_state.create_matrix = True
+
+def user_rating_func():
+    st.session_state.user_rating = True
+
+def dot_product_func():
+    st.session_state.dot_product = True
+
+def set_index_func():
+    st.session_state.set_index = True
+
+def get_weight_func():
+    st.session_state.get_weight = True
+
+def sort_desc_func():
+    st.session_state.sort_desc = True
+    
+def top_10_val_func():
+    st.session_state.top_10_val = True
