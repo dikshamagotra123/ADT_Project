@@ -38,9 +38,9 @@ def generate_random_user(dataFrame):
     import random
     # Set random seed (for reproducibility)
     random.seed(10)
-
+    random_user_list = [64237,1,32768,63223,6,8,9,10,13,22,36,1204]
     # Pick a random id from the ratings dataset
-    user = random.randint(dataFrame["user_id"].min(), dataFrame["user_id"].max())
+    user = random.choice(random_user_list)
     return user
 
 def get_user_df(dataFrame,user_id):
