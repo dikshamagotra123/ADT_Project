@@ -160,7 +160,7 @@ def main():
         customize_button('Hot Encode Dataframe', on_click = hot_encode_func)
         if st.session_state.hot_encode:
             hot_encode_data = hot_encode_dataframe(set_delimeter_data)
-            print(type(hot_encode_data))
+            print(f"{hot_encode_data=}")
             # st.table(hot_encode_data)
         
         cleaned_rating_data = import_csv_to_dataframe(folder_name="datasets",csv_name="cleaned_rating.csv")
@@ -185,6 +185,81 @@ def main():
         customize_button('Sum rating Null values', on_click = sum_null_func)
         if st.session_state.sum_null_val:
             st_show_nullvalues(cleaned_rating_data)
+        
+        st.button('Random User Generator', on_click = random_user_func)
+        if st.session_state.random_user:
+            user_num = generate_random_user(cleaned_rating_data)
+            st.write(user_num)
+        
+        st.button('Get User', on_click = get_user_func)
+        if st.session_state.get_user:
+            user_df = get_user_df(cleaned_rating_data,user_num)
+            # print(f"{user_df=}")
+            st_show_head(user_df)
+            
+        
+        st.button('Get Anime User ID', on_click = get_anime_user_id_func)
+        if st.session_state.get_anime_user_id:
+            user_id_df = get_anime_in_user_df(cleaned_anime_data,user_df)
+            hidden_encode = get_anime_in_user_df(hot_encode_data,user_df)
+            # print(f"{hidden_encode=}")
+            st_show_head(user_id_df)
+        
+        st.button('Sort Anime Matrix', on_click = sort_matrix_func)
+        if st.session_state.sort_matrix:
+            sort_anime = sort_anime_id(user_id_df)
+            hidden_sorted_encode = sort_anime_id(hidden_encode)
+            # print(f"{hidden_sorted_encode=}")
+            st_show_head(sort_anime)
+        
+        st.button('Drop Orphan Anime', on_click = drop_orphan_func)
+        if st.session_state.drop_orphan:
+            drop_orphan_df = drop_orphan_anime(user_df)
+            st_show_head(drop_orphan_df)
+        
+        st.button('Create Genre Matrix', on_click = create_matrix_func)
+        if st.session_state.create_matrix:
+            matrix_df = user_genre_matrix(sort_anime)
+            hidden_matrix_encode = user_genre_matrix(hidden_sorted_encode)
+            # print(hidden_matrix_encode)
+            st_show_head(matrix_df)
+
+        st.button('Rating Dataframe', on_click = user_rating_func)
+        if st.session_state.user_rating:
+            rating_user_df = user_rating(drop_orphan_df)
+            st_show_head(rating_user_df)
+        
+        st.button('Dot Product', on_click = dot_product_func)
+        if st.session_state.dot_product:
+            weight = dot_product(hidden_matrix_encode,rating_user_df)
+            # st_show_head(dot_product_df)
+            st.write(weight)
+
+        st.button('Set Index', on_click = set_index_func)
+        if st.session_state.set_index:
+            index_df = set_index(cleaned_anime_data)
+            hidden_index_encoded = set_index(hot_encode_data)
+            st_show_head(index_df)
+        
+        st.button('Get Average Weightage', on_click = get_weight_func)
+        if st.session_state.get_weight:
+            avg_df = get_weighted_avg(recommendation_table=hidden_index_encoded,weights=weight)
+            st_show_head(avg_df)
+        
+        st.button('Sort(Descending order)', on_click = sort_desc_func)
+        if st.session_state.sort_desc:
+            sort_desc_df = sort_desc_fun(recommendation_series=avg_df)
+            st_show_head(sort_desc_df)
+        
+        st.button('Get Top 10', on_click = top_10_val_func)
+        if st.session_state.top_10_val:
+            recc_df = top_10_recc(anime_df=hot_encode_data, recommendations=sort_desc_df)
+            print(f"{recc_df=}")
+            # recc_df_new = top_10_recc(anime_df=cleaned_anime_data, recommendations=sort_desc_df)
+            st.write(recc_df)
+            # st_show_head(recc_df)
+
+
     else:
         st.subheader("Collaborative Recommendation")
 
