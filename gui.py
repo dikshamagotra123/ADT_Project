@@ -243,6 +243,7 @@ def main():
         customize_button('Random User Generator', on_click = random_user_func)
         if st.session_state.random_user:
             user_num = generate_random_user(cleaned_rating_data)
+            print(f"{user_num=}")
             st.subheader(user_num)
             st.markdown(random_text)
         
