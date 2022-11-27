@@ -134,3 +134,6 @@ dmypy.json
 
 #Archive Folder
 archive/
+
+#pkl file
+recommender.pkl

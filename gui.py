@@ -7,8 +7,9 @@ import pandas as pd
 from utilities.db_functions import import_mongodb_to_dataframe,download_database
 from utilities.design_functions import add_bg_from_url,hide_menu_style,side_bar_menu,progress_bar,color_survived
 from utilities.df_functions import replace_col_datatypes,st_show_datatypes,st_show_nullvalues, filter_tv_rows,st_show_head,replace_rating_datatypes,export_cleandata_to_csv,total_shape,import_csv_to_dataframe
-from utilities.state_functions import clean_col,null_val,filter_tv,rating_val,null_tv,replace_rating,data_count,csv_file,anime_data,drop_na_func,drop_col_func,set_delimeter_func,hot_encode_func,rating_data,na_data_func,sum_null_func,random_user_func, get_user_func,get_anime_user_id_func,sort_matrix_func,drop_orphan_func,create_matrix_func,user_rating_func,dot_product_func,set_index_func,get_weight_func,sort_desc_func,top_10_val_func
+from utilities.state_functions import clean_col,null_val,filter_tv,rating_val,null_tv,replace_rating,data_count,csv_file,anime_data,drop_na_func,drop_col_func,set_delimeter_func,hot_encode_func,rating_data,na_data_func,sum_null_func,random_user_func, get_user_func,get_anime_user_id_func,sort_matrix_func,drop_orphan_func,create_matrix_func,user_rating_func,dot_product_func,set_index_func,get_weight_func,sort_desc_func,top_10_val_func,rm_info_func,load_data_func,drop_na_col_func,load_df_surprise_func,pred_data_func
 from utilities.content_filtering import drop_columns,drop_na_columns,set_delimeter,hot_encode_dataframe,get_user_df,generate_random_user,get_anime_in_user_df,sort_anime_id,drop_orphan_anime,user_genre_matrix,user_rating,dot_product,set_index,get_weighted_avg,sort_desc_fun,top_10_recc
+from utilities.collaborative_filtering import rm_info,load_data,drop_na_col,load_df_surprise,pred_data
 from utilities.button_functions import customize_button
 from utilities.caption_functions import info_text,check_datatypes_text,sum_null_text,remove_tv_text,rating_df_text,success_text,replace_dt_text,count_txt,cleaned_anime_text,drop_col_text,drop_na_text,inconsistent_text,hot_encode_text,cleaned_rating_text,missing_text,sum_text,random_text,drop_text,relevant_anime,sort_text,drop_col_two_text,tranpose_text,weight_text,weighted_avg_text,sort_weight_text,final_text,rating_text
 
@@ -328,6 +329,28 @@ def main():
 
     else:
         st.subheader("Collaborative Recommendation")
+        cleaned_a_data = import_csv_to_dataframe(folder_name="datasets",csv_name="cleaned_anime.csv")
+        if 'anime_data_val' not in st.session_state:
+            st.session_state.anime_data_val = False
+        
+        if 'rm_info' not in st.session_state:
+            st.session_state.rm_info = False
+        
+        if 'load_data' not in st.session_state:
+            st.session_state.load_data = False
+        
+        if 'drop_na_coll' not in st.session_state:
+            st.session_state.drop_na_col = False
+        
+        if 'load_df_surprise' not in st.session_state:
+            st.session_state.load_df_surprise = False
+        
+        if 'pred_data' not in st.session_state:
+            st.session_state.pred_data = False
+        
+        st.button('Import Cleaned Data', on_click = )
+        if st.session_state.anime_data_val:
+            st_show_head(cleaned_a_data)
 
 
 
