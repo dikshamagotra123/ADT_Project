@@ -97,10 +97,22 @@ def load_data_func():
     st.session_state.load_data = True
 
 def drop_na_col_func():
-    st.session_state.drop_na_col = True
+    st.session_state.drop_na_coll = True
 
 def load_df_surprise_func():
     st.session_state.load_df_surprise = True
 
 def pred_data_func():
     st.session_state.pred_data = True
+
+def param_func():
+    st.session_state.param = True
+
+def svd_func():
+    st.session_state.svd = True
+
+def pred_rating_func():
+    st.session_state.pred_rating = True
+
+def dump_func():
+    st.session_state.dump = True

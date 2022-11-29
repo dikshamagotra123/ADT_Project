@@ -8,17 +8,17 @@ from surprise.dump import dump
 def rm_info(dataFrame):
     anime_df = pd.read_csv("datasets/cleaned_anime.csv")
     dataFrame = anime_df.loc[:, ["anime_id", "name", "rating"]]
-    return dataFrame
+    return(dataFrame)
 
 def load_data(dataFrame):
-    rating_df = pd.read_csv("datasets/cleaned_rating.csv")
-    return(rating_df.head())
+    dataFrame = pd.read_csv("datasets/cleaned_rating.csv")
+    return(dataFrame)
 
 def drop_na_col(dataFrame):
     #removing the missing value
     dataFrame.dropna(inplace=True)
     # How many missing values do we have?
-    dataFrame.isnull().sum()
+    return(dataFrame)
 
 def load_df_surprise(dataFrame):
     # reader parses the file containing the ratings

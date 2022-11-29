@@ -137,3 +137,6 @@ archive/
 
 #pkl file
 recommender.pkl
+
+#dataset folder
+dataset/
