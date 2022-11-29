@@ -51,3 +51,13 @@ weighted_avg_text = "After this, we multiply the genres in the matrix with the w
 sort_weight_text = "The last step before we can finally recommend our user anime shows is to sort the values in descending order so we get the animes that would most appeal to the user at the top."
 
 final_text = "After all that work creating the recommendation system, we now have the top 10 recommendations for this user "
+
+rm_text = "Dropped the coloums which were not necessary for better memory optimization"
+
+rm_na_tetxt = "Removed NA values"
+
+surprie_text = "Using reader() we parse the file containing ratings and then loading dataFrame into model's dataset"
+
+pred_rating_text = "estimated rating that the user '4271' will give on anime ID:'7088' "
+
+dump_text = "exporting the recommendation system into a Pickle file for potentially usage in the future."
