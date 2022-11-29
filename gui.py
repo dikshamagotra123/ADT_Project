@@ -7,11 +7,11 @@ import pandas as pd
 from utilities.db_functions import import_mongodb_to_dataframe,download_database
 from utilities.design_functions import add_bg_from_url,hide_menu_style,side_bar_menu,progress_bar,color_survived
 from utilities.df_functions import replace_col_datatypes,st_show_datatypes,st_show_nullvalues, filter_tv_rows,st_show_head,replace_rating_datatypes,export_cleandata_to_csv,total_shape,import_csv_to_dataframe
-from utilities.state_functions import clean_col,null_val,filter_tv,rating_val,null_tv,replace_rating,data_count,csv_file,anime_data,drop_na_func,drop_col_func,set_delimeter_func,hot_encode_func,rating_data,na_data_func,sum_null_func,random_user_func, get_user_func,get_anime_user_id_func,sort_matrix_func,drop_orphan_func,create_matrix_func,user_rating_func,dot_product_func,set_index_func,get_weight_func,sort_desc_func,top_10_val_func,rm_info_func,load_data_func,drop_na_col_func,load_df_surprise_func,pred_data_func
+from utilities.state_functions import clean_col,null_val,filter_tv,rating_val,null_tv,replace_rating,data_count,csv_file,anime_data,drop_na_func,drop_col_func,set_delimeter_func,hot_encode_func,rating_data,na_data_func,sum_null_func,random_user_func, get_user_func,get_anime_user_id_func,sort_matrix_func,drop_orphan_func,create_matrix_func,user_rating_func,dot_product_func,set_index_func,get_weight_func,sort_desc_func,top_10_val_func,rm_info_func,load_data_func,drop_na_col_func,load_df_surprise_func,pred_data_func,param_func,svd_func,pred_rating_func,dump_func
 from utilities.content_filtering import drop_columns,drop_na_columns,set_delimeter,hot_encode_dataframe,get_user_df,generate_random_user,get_anime_in_user_df,sort_anime_id,drop_orphan_anime,user_genre_matrix,user_rating,dot_product,set_index,get_weighted_avg,sort_desc_fun,top_10_recc
 from utilities.collaborative_filtering import rm_info,load_data,drop_na_col,load_df_surprise,pred_data
 from utilities.button_functions import customize_button
-from utilities.caption_functions import info_text,check_datatypes_text,sum_null_text,remove_tv_text,rating_df_text,success_text,replace_dt_text,count_txt,cleaned_anime_text,drop_col_text,drop_na_text,inconsistent_text,hot_encode_text,cleaned_rating_text,missing_text,sum_text,random_text,drop_text,relevant_anime,sort_text,drop_col_two_text,tranpose_text,weight_text,weighted_avg_text,sort_weight_text,final_text,rating_text
+from utilities.caption_functions import info_text,check_datatypes_text,sum_null_text,remove_tv_text,rating_df_text,success_text,replace_dt_text,count_txt,cleaned_anime_text,drop_col_text,drop_na_text,inconsistent_text,hot_encode_text,cleaned_rating_text,missing_text,sum_text,random_text,drop_text,relevant_anime,sort_text,drop_col_two_text,tranpose_text,weight_text,weighted_avg_text,sort_weight_text,final_text,rating_text,rm_text,rm_na_tetxt,surprie_text,pred_rating_text,dump_text
 
 
 
@@ -23,7 +23,7 @@ def main():
     import streamlit as st
 
     st.title("Anime Recommendation System")
-    st.image('logo_img.png')
+    st.image('logo.png')
 
     options = side_bar_menu()
 
@@ -335,12 +335,24 @@ def main():
         
         if 'rm_info' not in st.session_state:
             st.session_state.rm_info = False
+    
+        customize_button('Import Anime Cleaned Data', on_click = anime_data)
+        if st.session_state.anime_data_val:
+            st_show_head(cleaned_a_data)
+            st.markdown(cleaned_anime_text)
         
-        if 'load_data' not in st.session_state:
-            st.session_state.load_data = False
+        customize_button('Remove Unwanted Data', on_click = rm_info_func)
+        if st.session_state.rm_info:
+            rm_df = rm_info(cleaned_a_data)
+            st_show_head(rm_df)
+            st.markdown(rm_text)
+        
+        cleaned_r_data = import_csv_to_dataframe(folder_name="datasets",csv_name ="cleaned_rating.csv")
+        if 'rating_data_val' not in st.session_state:
+            st.session_state.rating_data_val = False
         
         if 'drop_na_coll' not in st.session_state:
-            st.session_state.drop_na_col = False
+            st.session_state.drop_na_coll = False
         
         if 'load_df_surprise' not in st.session_state:
             st.session_state.load_df_surprise = False
@@ -348,9 +360,70 @@ def main():
         if 'pred_data' not in st.session_state:
             st.session_state.pred_data = False
         
-        st.button('Import Cleaned Data', on_click = )
-        if st.session_state.anime_data_val:
-            st_show_head(cleaned_a_data)
+        if 'param' not in st.session_state:
+            st.session_state.param = False
+        
+        if 'svd' not in st.session_state:
+            st.session_state.svd = False
+        
+        if 'pred_rating' not in st.session_state:
+            st.session_state.pred_rating = False
+        
+        if 'dump' not in st.session_state:
+            st.session_state.dump = False
+        
+        
+        customize_button('Import Rating Cleaned Data', on_click = rating_data)
+        if st.session_state.rating_data_val:
+            st_show_head(cleaned_r_data)
+            st.markdown(cleaned_rating_text)
+        
+        customize_button('Drop NA Values', on_click = drop_na_col_func)
+        if st.session_state.drop_na_coll:
+            drop_df = drop_na_col(cleaned_r_data)
+            drop_df1 = drop_na_col(cleaned_r_data)
+            st_show_head(drop_df)
+            st.markdown(rm_na_tetxt)
+        
+        customize_button('Load into Surprise', on_click = load_df_surprise_func)
+        if st.session_state.load_df_surprise:
+            load_s_df = load_df_surprise(drop_df1)
+            st.write("<surprise.dataset.DatasetAutoFolds at 0x1071f4520>")
+            st.markdown(surprie_text)
+        
+        customize_button('Best RMSE Score', on_click = pred_data_func)
+        if st.session_state.pred_data:
+            st.write("1.1390830986360678")
+        
+        customize_button('Best Parameter for RMSE Score', on_click = param_func)
+        if st.session_state.param:
+            st.write("{'n_epochs': 15, 'lr_all': 0.007, 'reg_all': 0.03}")
+        
+        customize_button('SVD Algorithm Output', on_click = svd_func)
+        if st.session_state.svd:
+            st.write("<surprise.prediction_algorithms.matrix_factorization.SVD at 0x1137bb6d0>")
+
+        customize_button('Predict Rating', on_click = pred_rating_func)
+        if st.session_state.pred_rating:
+            st.write("7.842715144527709")
+            st.markdown(pred_rating_text)
+        
+        customize_button('Dumping Data in .pkl file', on_click = dump_func)
+        if st.session_state.dump:
+            from PIL import Image
+            image = Image.open('pkl file.png')
+            st.image(image, caption=None)
+            st.markdown(dump_text)
+
+            
+        
+
+
+
+
+        
+        
+        
 
 
 
