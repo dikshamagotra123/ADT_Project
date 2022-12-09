@@ -1,4 +1,4 @@
-check_datatypes_text = "Checking the columns using suitable datatypes and replace animes where the number of episodes are unknown into nan and then convert everything to float"
+check_datatypes_text = "As, MongoDB stores everything into object. So, we have to check the columns datatypes and replace it with respect to their suitable datatypes to get the accurate recommendations."
 
 sum_null_text = "How many missing values do we have for each column?"
 

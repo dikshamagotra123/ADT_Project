@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-img = Image.open('anime.jpg')
+img = Image.open('images/anime.jpg')
 st.set_page_config(page_title="Anime Recommendation System", page_icon=img)
 
 import pandas as pd
@@ -23,7 +23,7 @@ def main():
     import streamlit as st
 
     st.title("Anime Recommendation System")
-    st.image('logo.png')
+    st.image('images/logo.png')
 
     options = side_bar_menu()
 
@@ -34,6 +34,7 @@ def main():
 
         if not data_frame.empty:
             st.write(data_frame.head(10))
+            st.markdown("Importing Anime Data using Kaggle API and storing them into MongoDB")
             if 'clean_columns' not in st.session_state:
                 st.session_state.clean_columns = False
 
@@ -166,7 +167,7 @@ def main():
         if st.session_state.hot_encode:
             hot_encode_data = hot_encode_dataframe(set_delimeter_data)
             from PIL import Image
-            image = Image.open('hot_encode.jpeg')
+            image = Image.open('images/hot_encode.jpeg')
 
             st.image(image, caption=None)
             st.markdown(hot_encode_text)

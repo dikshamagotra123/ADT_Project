@@ -38,7 +38,7 @@ def generate_random_user(dataFrame):
     import random
     sys_random = random.SystemRandom()
 
-    random_user_list = [64237,1,32768,6,8,632239,10,13,22,36,1204]
+    random_user_list = [36]
     # Pick a random id from the ratings dataset
     user = sys_random.choice(random_user_list)
     return user

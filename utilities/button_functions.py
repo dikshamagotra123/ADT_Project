@@ -28,3 +28,4 @@ def customize_button(label,on_click):
         pass
     with col2 :
         st.button(label=label, on_click = on_click)
+    return True
