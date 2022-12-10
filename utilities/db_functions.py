@@ -35,7 +35,8 @@ def import_data_to_mongo(db_name,collection_name):
 def import_mongodb_to_dataframe(collection_name):
     import pymongo
     import pandas as pd
-    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+    
+    myclient = pymongo.MongoClient('mongodb_container', 27017)
     mydb = myclient["anime_db"]
     collection = mydb[collection_name]
     df = pd.DataFrame(list(collection.find({},{"_id":False})))

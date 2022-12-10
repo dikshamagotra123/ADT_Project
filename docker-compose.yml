@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  web:
+      image: streamlit
+      command: streamlit run gui.py
+      volumes:
+        - ./app/:/usr/src/app/
+      ports:
+        - 8501:8501
+      depends_on:
+        - mongodb_container
+      networks:
+        - my_net
+
+  mongodb_container:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+    networks:
+      - my_net
+
+volumes:
+  mongodb_data_container:
+networks:
+    my_net:
